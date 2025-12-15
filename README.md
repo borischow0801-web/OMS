@@ -1,3 +1,4 @@
+
 # 信息化软件项目运维管理系统
 
 ## 项目简介
@@ -138,7 +139,11 @@ npm run dev
 
 访问 http://localhost:3000
 
-## 许可证
 
-MIT License
+
+
+
+
+
+
 
