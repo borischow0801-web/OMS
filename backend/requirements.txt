@@ -1,0 +1,44 @@
+# Django核心框架
+Django==4.2.11
+djangorestframework==3.14.0
+
+# JWT认证
+djangorestframework-simplejwt==5.3.1
+
+# 数据库
+mysqlclient==2.2.0
+
+# Redis缓存
+django-redis==5.4.0
+redis==5.0.1
+
+# CORS跨域
+django-cors-headers==4.3.1
+
+# 环境变量管理
+python-decouple==3.8
+
+# 时间处理
+python-dateutil==2.8.2
+
+# 工具库
+Pillow==10.2.0
+
+# 生产环境服务器
+gunicorn==21.2.0
+
+# 开发工具
+django-extensions==3.2.3
+
+# API文档（可选）
+drf-yasg==1.21.7
+
+# 日志
+loguru==0.7.2
+
+# HTTP请求库（用于短信发送）
+requests==2.31.0
+
+# Excel文件处理（用于用户批量导入）
+openpyxl==3.1.2
+

@@ -1,0 +1,52 @@
+/* pages/tasks/list/list.wxss */
+.container {
+  padding: 20rpx;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.task-item {
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 10rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.task-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.task-meta {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 10rpx;
+}
+
+.task-type,
+.task-status {
+  font-size: 24rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.task-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+}
+

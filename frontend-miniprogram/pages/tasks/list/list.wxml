@@ -1,0 +1,23 @@
+<!--pages/tasks/list/list.wxml-->
+<view class="container">
+  <view class="task-list">
+    <view
+      class="task-item"
+      wx:for="{{tasks}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="navigateToDetail"
+    >
+      <view class="task-title">{{item.title}}</view>
+      <view class="task-meta">
+        <text class="task-type">{{item.task_type_display}}</text>
+        <text class="task-status">{{item.status_display}}</text>
+      </view>
+      <view class="task-time">{{item.created_at}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:if="{{!loading && tasks.length === 0}}" class="empty">暂无任务</view>
+</view>
+

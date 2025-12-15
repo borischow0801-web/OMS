@@ -1,0 +1,12 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls static %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    <li>
+        <a href="{% url 'admin:accounts_user_import' %}" class="addlink">
+            批量导入用户
+        </a>
+    </li>
+{% endblock %}
+

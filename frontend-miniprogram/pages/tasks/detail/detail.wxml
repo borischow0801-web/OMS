@@ -1,0 +1,36 @@
+<!--pages/tasks/detail/detail.wxml-->
+<view class="container">
+  <view wx:if="{{task}}" class="task-detail">
+    <view class="task-title">{{task.title}}</view>
+    <view class="task-info">
+      <text class="info-item">类型: {{task.task_type_display}}</text>
+      <text class="info-item">状态: {{task.status_display}}</text>
+      <text class="info-item">优先级: {{task.priority_display}}</text>
+    </view>
+    <view class="task-description">
+      <text class="label">描述:</text>
+      <text class="content">{{task.description}}</text>
+    </view>
+    
+    <!-- 附件列表 -->
+    <view wx:if="{{task.attachments && task.attachments.length > 0}}" class="attachments-section">
+      <text class="label">附件:</text>
+      <view class="attachments-list">
+        <view wx:for="{{task.attachments}}" wx:key="id" class="attachment-item">
+          <text class="attachment-name">{{item.original_filename}}</text>
+          <text class="attachment-size">{{item.file_size_display}}</text>
+          <button class="download-btn" size="mini" bindtap="downloadAttachment" data-id="{{item.id}}">下载</button>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 拍照上传按钮（预留功能） -->
+    <view wx:if="{{task.status === 'pending_review'}}" class="upload-section">
+      <button class="upload-btn" type="primary" bindtap="takePhotoAndUpload">
+        拍照上传附件
+      </button>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+</view>
+
