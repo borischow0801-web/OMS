@@ -4,16 +4,23 @@ from django.db import models
 
 class User(AbstractUser):
     """用户模型"""
+    # 角色定义
+    # 统一使用以下角色值：
+    # - user（使用方），对应Bspplus的REQUESTER
+    # - admin（管理方），对应Bspplus的AUDITOR
+    # - manager（承建方-项目经理），对应Bspplus的PM
+    # - employee（承建方-员工），对应Bspplus的STAFF
     ROLE_CHOICES = [
-        ('user', '使用方'),
-        ('admin', '管理方'),
-        ('manager', '承建方-项目经理'),
-        ('employee', '承建方-员工'),
+        ('user', '使用方'),            # 使用方，对应Bspplus的REQUESTER，默认角色
+        ('admin', '管理方'),           # 管理方，对应Bspplus的AUDITOR
+        ('manager', '承建方-项目经理'), # 承建方-项目经理，对应Bspplus的PM
+        ('employee', '承建方-员工'),   # 承建方-员工，对应Bspplus的STAFF
     ]
     
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user', verbose_name='角色')
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='手机号')
     department = models.CharField(max_length=100, blank=True, null=True, verbose_name='部门')
+    region_name = models.CharField(max_length=200, blank=True, null=True, verbose_name='区划名称')
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name='头像')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='更新时间')

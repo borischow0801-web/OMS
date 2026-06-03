@@ -38,6 +38,23 @@ class DateBasedFileStorage(FileSystemStorage):
         
         # 构建路径: OMS/docs/2025/11/24/filename
         date_path = os.path.join(year, month, day)
+        
+        # 处理文件名过长的问题
+        # MySQL FileField 默认是 VARCHAR(100)，需要确保总路径长度不超过限制
+        # 日期路径长度: 4(年) + 1(/) + 2(月) + 1(/) + 2(日) + 1(/) = 11
+        # 留一些余量，文件名部分限制在 80 字符以内
+        max_filename_length = 80
+        if len(filename) > max_filename_length:
+            # 截断文件名，保留扩展名
+            name, ext = os.path.splitext(filename)
+            # 计算可用的文件名长度（减去扩展名长度）
+            max_name_length = max_filename_length - len(ext)
+            if max_name_length > 0:
+                filename = name[:max_name_length] + ext
+            else:
+                # 如果扩展名本身就超过限制，只保留扩展名的一部分
+                filename = ext[:max_filename_length]
+        
         filename_path = os.path.join(date_path, filename)
         
         # 确保目录存在

@@ -24,8 +24,8 @@
       </view>
     </view>
     
-    <!-- 拍照上传按钮（预留功能） -->
-    <view wx:if="{{task.status === 'pending_review'}}" class="upload-section">
+    <!-- 拍照上传按钮（草稿和待审核状态可上传） -->
+    <view wx:if="{{task.status === 'draft' || task.status === 'pending_review'}}" class="upload-section">
       <button class="upload-btn" type="primary" bindtap="takePhotoAndUpload">
         拍照上传附件
       </button>

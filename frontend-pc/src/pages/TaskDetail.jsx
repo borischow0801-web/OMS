@@ -423,9 +423,11 @@ function TaskDetail() {
               bordered
               dataSource={task.attachments}
               renderItem={(attachment) => {
-                const canDelete = (task.status === 'pending_review' || task.status === 'draft') && 
+                // 草稿状态：任务提出方和管理员可以删除
+                // 待审核状态：只有任务提出方可以删除
+                const canDelete = (task.status === 'draft' || task.status === 'pending_review') && 
                   (user?.role === 'user' || user?.role === 'admin') && 
-                  (task.creator?.id === user?.id || user?.role === 'admin')
+                  (task.status === 'draft' ? (task.creator?.id === user?.id || user?.role === 'admin') : task.creator?.id === user?.id)
                 
                 return (
                   <List.Item
@@ -496,6 +498,31 @@ function TaskDetail() {
                 上传附件
               </Button>
               <span style={{ marginLeft: 12, color: '#999' }}>草稿阶段可自由上传或删除附件</span>
+            </div>
+          </div>
+        )}
+        {task.status === 'pending_review' && user?.role === 'user' && 
+         task.creator?.id === user?.id && (
+          <div style={{ marginTop: 16 }}>
+            <h4>附件管理</h4>
+            <Upload
+              fileList={draftUploadList}
+              beforeUpload={() => false}
+              onChange={handleDraftUploadChange}
+              multiple
+            >
+              <Button icon={<UploadOutlined />}>选择附件</Button>
+            </Upload>
+            <div style={{ marginTop: 8 }}>
+              <Button
+                type="primary"
+                disabled={draftUploadList.length === 0}
+                loading={draftUploading}
+                onClick={handleDraftUpload}
+              >
+                上传附件
+              </Button>
+              <span style={{ marginLeft: 12, color: '#999' }}>任务已提交，在审核前仍可上传附件</span>
             </div>
           </div>
         )}

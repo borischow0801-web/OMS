@@ -18,5 +18,8 @@ export const userApi = {
   
   // 获取员工列表
   getEmployees: () => api.get('/accounts/users/employees/'),
+  
+  // 获取承建方用户列表（项目经理和员工）
+  getContractors: () => api.get('/accounts/users/contractors/'),
 }
 

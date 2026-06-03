@@ -49,6 +49,19 @@ function Layout() {
       icon: <FileTextOutlined />,
       label: '任务管理',
     },
+    // 运维记录菜单 - 仅承建方可见
+    ...(user?.role === 'manager' || user?.role === 'employee' ? [
+      {
+        key: '/maintenance/records',
+        icon: <FileTextOutlined />,
+        label: '运维记录录入',
+      },
+      {
+        key: '/maintenance/report',
+        icon: <FileTextOutlined />,
+        label: '运维记录报告',
+      },
+    ] : []),
   ]
 
   const userMenuItems = [

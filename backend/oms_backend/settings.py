@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.tasks',
     'apps.workflow',
+    'apps.maintenance',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +80,7 @@ DATABASES = {
         'PORT': config('DATABASE_PORT', default='3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',
+            'unix_socket': '/data/mysql/mysqld.sock',
         },
     }
 }
@@ -165,3 +167,47 @@ CORS_ALLOWED_ORIGINS = config(
 
 CORS_ALLOW_CREDENTIALS = True
 
+
+# Bspplus接口配置
+BSPPLUS_API_ROOT = config('BSPPLUS_API_ROOT', default='http://localhost:8080')
+BSPPLUS_APP_CODE = config('BSPPLUS_APP_CODE', default='app_test1')
+
+# 日志配置
+# 将应用日志输出到stderr，这样Gunicorn的--error-logfile才能捕获
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': None,  # 使用stderr
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',  # 生产环境可以改为INFO，开发环境可以用DEBUG
+    },
+    'loggers': {
+        'apps.accounts.bspplus_service': {
+            'handlers': ['console'],
+            'level': 'ERROR',  # 角色解析日志使用ERROR级别，确保被记录
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

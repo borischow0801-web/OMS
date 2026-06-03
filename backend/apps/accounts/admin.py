@@ -15,14 +15,14 @@ from .import_service import UserImportService
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ('username', 'email', 'role', 'phone', 'department', 'is_active', 'created_at')
-    list_filter = ('role', 'is_active', 'is_staff', 'created_at')
-    search_fields = ('username', 'first_name', 'last_name', 'email', 'phone')
+    list_display = ('username', 'email', 'role', 'phone', 'department', 'region_name', 'is_active', 'created_at')
+    list_filter = ('role', 'is_active', 'created_at')
+    search_fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'region_name')
     fieldsets = BaseUserAdmin.fieldsets + (
-        ('额外信息', {'fields': ('role', 'phone', 'department', 'avatar')}),
+        ('额外信息', {'fields': ('role', 'phone', 'department', 'region_name', 'avatar')}),
     )
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
-        ('额外信息', {'fields': ('role', 'phone', 'department', 'email')}),
+        ('额外信息', {'fields': ('role', 'phone', 'department', 'region_name', 'email')}),
     )
     
     def get_urls(self):

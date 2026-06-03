@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'full_name', 'email', 
-                  'role', 'role_display', 'phone', 'department', 'avatar', 'is_active', 
+                  'role', 'role_display', 'phone', 'department', 'region_name', 'avatar', 'is_active', 
                   'created_at', 'updated_at')
         read_only_fields = ('id', 'created_at', 'updated_at', 'full_name')
 
@@ -42,7 +42,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     """更新用户序列化器"""
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'phone', 'department', 'avatar')
+        fields = ('first_name', 'last_name', 'email', 'phone', 'department', 'region_name', 'avatar')
 
 
 class ChangePasswordSerializer(serializers.Serializer):

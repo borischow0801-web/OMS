@@ -599,22 +599,29 @@ class TaskViewSet(viewsets.ModelViewSet):
         task = self.get_object()
         user = request.user
         
-        # 检查权限：使用方和管理员在任务创建时（pending_review）或草稿状态（draft）可以上传
-        if task.status in ['pending_review', 'draft'] and (user.is_user or user.is_admin):
-            if task.creator != user and not user.is_admin:
-                return Response(
-                    {'error': '只能为自己的任务上传附件'},
-                    status=status.HTTP_403_FORBIDDEN
-                )
-        elif task.status not in ['pending_review', 'draft']:
-            # 任务提交后，任何人都不能上传新附件
-            return Response(
-                {'error': '任务已提交，不能上传新附件'},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        # 检查权限：
+        # 1. 草稿状态（draft）：任务提出方和管理员可以上传
+        # 2. 待审核状态（pending_review）：任务提出方可以上传（在管理方审核之前）
+        # 3. 已审核及之后的状态：不能上传新附件
+        if task.status in ['draft', 'pending_review'] and (user.is_user or user.is_admin):
+            # 在 pending_review 状态下，只有任务提出方可以上传，管理员不能上传
+            if task.status == 'pending_review':
+                if task.creator != user:
+                    return Response(
+                        {'error': '任务已提交，只有任务提出方可以在审核前上传附件'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+            # 在 draft 状态下，任务提出方和管理员都可以上传
+            elif task.status == 'draft':
+                if task.creator != user and not user.is_admin:
+                    return Response(
+                        {'error': '只能为自己的任务上传附件'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
         else:
+            # 任务已审核，不能上传新附件
             return Response(
-                {'error': '没有权限上传附件'},
+                {'error': '任务已审核，不能上传新附件。只有草稿状态或待审核状态的任务可以上传附件。'},
                 status=status.HTTP_403_FORBIDDEN
             )
         
@@ -672,16 +679,28 @@ class TaskViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        # 检查权限：只有使用方和管理员在任务创建时（pending_review）或草稿状态（draft）可以删除
-        if task.status in ['pending_review', 'draft'] and (user.is_user or user.is_admin):
-            if task.creator != user and not user.is_admin:
-                return Response(
-                    {'error': '只能删除自己任务的附件'},
-                    status=status.HTTP_403_FORBIDDEN
-                )
+        # 检查权限：
+        # 1. 草稿状态（draft）：任务提出方和管理员可以删除
+        # 2. 待审核状态（pending_review）：任务提出方可以删除
+        # 3. 已审核及之后的状态：不能删除附件
+        if task.status in ['draft', 'pending_review'] and (user.is_user or user.is_admin):
+            # 在 pending_review 状态下，只有任务提出方可以删除
+            if task.status == 'pending_review':
+                if task.creator != user:
+                    return Response(
+                        {'error': '任务已提交，只有任务提出方可以删除附件'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+            # 在 draft 状态下，任务提出方和管理员都可以删除
+            elif task.status == 'draft':
+                if task.creator != user and not user.is_admin:
+                    return Response(
+                        {'error': '只能删除自己任务的附件'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
         else:
             return Response(
-                {'error': '任务已提交，不能删除附件'},
+                {'error': '任务已审核，不能删除附件。只有草稿状态或待审核状态的任务可以删除附件。'},
                 status=status.HTTP_403_FORBIDDEN
             )
         

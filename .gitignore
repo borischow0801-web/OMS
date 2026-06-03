@@ -50,3 +50,10 @@ build/
 # Logs
 logs/
 *.log
+.next/
+target/
+coverage/
+staticfiles/
+.env.*
+!.env.example
+.venv/
